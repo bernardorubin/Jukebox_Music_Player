@@ -4,7 +4,7 @@ $(document).ready(function() {
         event.preventDefault();
         var notes = $('#song-notes').val();
         var name = $('#song-name').val()
-        $("#song-queue").append(`<li><span class="id1">${name}</span> : <span class="id2 not_visible">${notes}</span></li>`);
+        $("#song-queue").append(`<li class"chuy"><span class="class1">${name}</span> : <span class="class2 not_visible">${notes}</span></li>`);
         this.reset();
     });
 
@@ -32,14 +32,7 @@ $(document).ready(function() {
     });
 
 
-
-
-
-
-
-
-
-    $('li').on("mouseenter", function() {
+    $('#song-queue  .chuy').on("mouseenter", function() {
       console.log('hovered');
       // $(this).toggle();
     });
