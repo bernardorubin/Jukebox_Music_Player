@@ -32,10 +32,29 @@ $(document).ready(function() {
     });
 
 
-    $('#song-queue  .chuy').on("mouseenter", function() {
-      console.log('hovered');
-      // $(this).toggle();
+    // $().on("mouseenter", function() {
+    //   console.log('hovered');
+    //   // $(this).toggle();
+    // });
+// http://stackoverflow.com/questions/14950321/how-to-bind-hover-to-dynamically-created-li-elemtent
+    $(document.body).on("mouseenter", "li", function() {
+    // hover starts code here
+    $('.class2').addClass('visible_now');
+    $('.class2').removeClass('not_visible');
+    console.log('Hello Hover');
+
     });
+
+    $(document.body).on("mouseleave", "li", function() {
+        // hover ends code here
+        $('.class2').addClass('not_visible');
+        $('.class2').removeClass('visible_now');
+    });
+// 1
+// hacer event listener en space
+// 2
+// prevent default cuando esta activa la form
+
 
     // let notesString = window.prompt("Gimme a String please");
     // let notes = parseSong("E E E E E E E G C D E");
@@ -58,3 +77,9 @@ $(document).ready(function() {
     //   queue should now include song names AND the song notes themselves.
     //   When jukebox is playing a song, a message should show on the page saying Now Playing [Song Name]. When there is no song playing, the message should say Enter a song to play
 });
+
+// $(document).on(function() {
+//   $('li').on("mouseenter", function() {
+//      console.log('hovered');
+//   });
+// });
