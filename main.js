@@ -1,17 +1,34 @@
 $(document).ready(function() {
+    var repeat = false;
+    $('#repeat-button').click(function() {
+        $(this).toggleClass('repeatOn');
+        if (repeat) {
+            repeat = false;
+        } else {
+            repeat = true;
+        }
+    });
 
     $("#song-form").submit(function(event) {
         event.preventDefault();
         var notes = $('#song-notes').val();
         var name = $('#song-name').val()
-        $("#song-queue").append(`<li class"chuy"><span class="class1">${name}</span> : <span class="class2 not_visible">${notes}</span></li>`);
+        $("#song-queue").append(`<li><span class="class1">${name}</span><span class="class2 not_visible"> : </span><span class="class2 not_visible">${notes}</span><span class="class3 not_visible" style="float:right"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></span><span class="class4 not_visible" style="float:right; margin-right:10px"><i class="fa fa-level-up fa-2x" aria-hidden="true"></i></span></li>`);
         this.reset();
     });
-
+    // document.createElement("div"); 👈 use this!!
     const onComplete = function() {
-        $("#song-queue li").first().remove();
+        if (repeat) {
+            $("#song-queue").append($("#song-queue li").first());
+        } else {
+            $("#played-songs").append($("#song-queue li").first());
+        }
+        // $("#song-queue li").first().remove();
         if ($("#song-queue li").length === 0) {
-            $('#play-button').removeClass("animate-pulse");
+            $('#play-button').removeClass("animate-pulse repeatOn");
+            $('#play-button').html('<i class="fa fa-play-circle" aria-hidden="true"></i>');
+            $('body').css('background-color', `#333333`);
+            $('.fa-music').removeClass("animate-pulse black");
             $('.song-name-now').text("Add a Song");
             return
         }
@@ -27,58 +44,88 @@ $(document).ready(function() {
         let notes = parseSong(music[1]);
         $('.song-name-now').text(music[0]);
         playSong(notes, 200, onComplete);
-        $('#play-button').addClass("animate-pulse");
+        $('#play-button').addClass("animate-pulse repeatOn");
+        $('#play-button').html('<i class="fa fa-pause-circle" aria-hidden="true"></i>');
+        $('.fa-music').addClass("animate-pulse black");
+        var color = Math.floor((Math.random() * 655366) + 1);
+        console.log(color);
+        $('body').css('background-color', `#${color}`);
         // Add event listener to toggle the animate class 🤔 ?
     });
-
 
     // $().on("mouseenter", function() {
     //   console.log('hovered');
     //   // $(this).toggle();
     // });
-// http://stackoverflow.com/questions/14950321/how-to-bind-hover-to-dynamically-created-li-elemtent
-    $(document.body).on("mouseenter", "li", function() {
-    // hover starts code here
-    $('.class2').addClass('visible_now');
-    $('.class2').removeClass('not_visible');
-    console.log('Hello Hover');
+    // http://stackoverflow.com/questions/14950321/how-to-bind-hover-to-dynamically-created-li-elemtent
+    // WHY DOESN'T THIS WORK? 👇
+    // $('li').mouseenter(function() {
+    //     console.log("hello");
+    //     // only targets original html, not appended elements
+    // })
+
+    // para hacer hover en el dyamically created element en lugar de document.body podemos seleccionar cualquier parent element de #song-queue li
+
+    $(document.body).on("mouseenter", "#song-queue li", function() {
+        // hover starts code here
+        console.log(this); //DOM element
+        console.log($(this)); //object
+        $(this).children('.class2').addClass('visible_now');
+        $(this).children('.class2').removeClass('not_visible');
 
     });
 
-    $(document.body).on("mouseleave", "li", function() {
-        // hover ends code here
-        $('.class2').addClass('not_visible');
-        $('.class2').removeClass('visible_now');
+    $(document.body).on("mouseleave", "#song-queue li", function() {
+        $(this).children('.class2').addClass('not_visible');
+        $(this).children('.class2').removeClass('visible_now');
     });
-// 1
-// hacer event listener en space
-// 2
-// prevent default cuando esta activa la form
 
+    $('body').keyup(function(event) {
+        if (event.keyCode == 32) {
+            console.log('space');
+            $('#play-button').click();
+        }
+    });
 
-    // let notesString = window.prompt("Gimme a String please");
-    // let notes = parseSong("E E E E E E E G C D E");
-    // // let a = parseSong("A*1 C#*2 D*4");
-    // playSong(notes, 200, onComplete);
+    $('#song-form').keyup(function(event) {
+        event.stopPropagation();
+    });
 
-    // 1 ✅
-    //   user will enter a string of song notes (e.g. "A B*2 C#") into the song form.
-    //   submit the form, create a new list item in the Song Queue
-    //   append list item
-    //   clear the text field contents so that they can easily add more songs.
-    // 2 play button clicked ✅
-    //   Start playing the top song in the queue.
-    //   Remove the top song from the queue.
-    //   When the top song is finished playing, repeat with the next top song until there are no songs left to play.
-    //   play button slides up to show that we are currently playing.
-    //   When the last song is finished playing, slide the Play button back down.
-    // 3
-    //   on Enqueue Song button click, add the songs name to the list item you created.
-    //   queue should now include song names AND the song notes themselves.
-    //   When jukebox is playing a song, a message should show on the page saying Now Playing [Song Name]. When there is no song playing, the message should say Enter a song to play
+    $('#delete-button').on('click', function() {
+        $("#played-songs").children().remove();
+    })
+    $('#play-again').on('click', function() {
+        $("#song-queue").append($("#played-songs").children());
+    })
+
+    $(document.body).on("mouseenter", "#played-songs li", function() {
+        // Why are these different 👇
+        console.log(this); //DOM element
+        console.log($(this)); //object
+        $(this).children('.class3, .class2, .class4').addClass('visible_now');
+        $(this).children('.class3, .class2, .class4').removeClass('not_visible');
+    });
+
+    $(document.body).on("mouseleave", "#played-songs li", function() {
+        $(this).children('.class3, .class2, .class4').addClass('not_visible');
+        $(this).children('.class3, .class2, .class4').removeClass('visible_now');
+
+    });
+
+    $(document.body).on('click', '.class3', function() {
+        $(this).parent().remove();
+    });
+    $(document.body).on('click', '.class4', function() {
+        $("#song-queue").append($(this).parent());
+    });
+
+    // Missing Stretches >>
+    // clicking it will pause the queue and turn it into a Play All button again.
+
 });
 
-// $(document).on(function() {
+// Would this work? 👇
+// $(document.body).on(function() {
 //   $('li').on("mouseenter", function() {
 //      console.log('hovered');
 //   });

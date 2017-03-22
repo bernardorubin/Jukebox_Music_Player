@@ -8,6 +8,7 @@
     <!-- Custom styles -->
     <link rel="stylesheet" href="main.css"/>
 
+
     <!-- Include jQuery -->
     <script
       src="https://code.jquery.com/jquery-3.1.1.min.js"
@@ -24,10 +25,11 @@
     <div class="container">
 
       <h1 class="page-header">
-        JukeBox
+        JB <i class="fa fa-music fa-lg"></i>
         <span class="song-name-now">Add Songs</span>
         <!-- Play button -->
-        <button id="play-button" class="btn btn-lg btn-primary">Play All</button>
+        <button id="repeat-button" class="btn btn-lg btn-default"><i class="fa fa-repeat" aria-hidden="true"></i></button>
+        <button id="play-button" class="btn btn-lg btn-default"><i class="fa fa-play-circle" aria-hidden="true"></i></button>
       </h1>
 
       <!-- Song queue -->
@@ -40,6 +42,17 @@
         <input name="notes" class="form-control" type="text" id="song-notes" placeholder="Enter song notes..."/>
         <input class="btn btn-default" type="submit" value="Add Song">
       </form>
+      <br>
+
+      <h1 class = "page-header"> Played Songs
+
+        <button id="delete-button" class="btn btn-danger">Delete All</button>
+        <button id="play-again" class="btn btn-success">All Back to Queue</button>
+
+      </h1>
+
+      <ul id="played-songs">
+      </ul>
 
     </div>
   </body>

@@ -1,13 +1,18 @@
-#song-queue {
+body {
+  background-color: #333333;
+  transition: all 2s ease;
+}
+
+#song-queue, #played-songs {
   list-style:none;
   padding-left: 0;
   min-height: 150px;
-  border: 2px dashed #282828;
+  border: 2px dashed lightyellow;
   border-radius: 4px;
   padding: 5px;
 }
 
-#song-queue li {
+#song-queue li, #played-songs li {
   border-color: #282828;
   margin-bottom: 20px;
   background-color: #222222;
@@ -18,14 +23,15 @@
   cursor: pointer;
 }
 
-#song-form input[name="notes"],#song-form input[name="song-name"] {
+#song-form input[name="notes"], #song-form input[name="song-name"], #played-songs input[name="notes"], #played-songs input[name="song-name"] {
   max-width: 500px;
   margin-right: 1em;
   float: left;
 }
 
-#play-button {
+#play-button, #delete-button, #play-again, #repeat-button {
   float: right;
+  border: 1px solid lightyellow;
 }
 
 @keyframes Pulse {
@@ -48,6 +54,21 @@
   display:none;
 }
 
-.visible_now{
+.visible_now {
   display: inline;
+}
+
+.repeatOn {
+  background-color: green;
+}
+.repeatOn:focus {
+  background-color: green;
+}
+
+.black {
+  color: black;
+}
+
+h1 {
+  color: lightyellow
 }
